@@ -1,0 +1,13 @@
+build/
+*.pkg
+*.dmg
+.DS_Store
+*.user
+*.suo
+.vs/
+*.xcodeproj/
+*.xcworkspace/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
