@@ -2,6 +2,8 @@
 
 A VST3/AU synthesizer plugin for macOS, built with JUCE.
 
+![Andre Synth UI](docs/screenshot.png)
+
 ## Download & Install
 
 👉 **[Download latest installer (macOS)](../../releases/latest)**
