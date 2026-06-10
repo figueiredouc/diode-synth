@@ -93,7 +93,7 @@ float EPVoice::process(double sampleRate,
 
 // ── Processor ────────────────────────────────────────────────────────────────
 
-juce::AudioProcessorValueTreeState::ParameterLayout AndreProcessor::createParameterLayout()
+juce::AudioProcessorValueTreeState::ParameterLayout DiodeProcessor::createParameterLayout()
 {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
 
@@ -144,33 +144,33 @@ juce::AudioProcessorValueTreeState::ParameterLayout AndreProcessor::createParame
     return { params.begin(), params.end() };
 }
 
-AndreProcessor::AndreProcessor()
+DiodeProcessor::DiodeProcessor()
     : AudioProcessor(BusesProperties()
         .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
       apvts(*this, nullptr, "Parameters", createParameterLayout())
 {}
 
-bool AndreProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+bool DiodeProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
     return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo()
         || layouts.getMainOutputChannelSet() == juce::AudioChannelSet::mono();
 }
 
-void AndreProcessor::prepareToPlay(double sampleRate, int)
+void DiodeProcessor::prepareToPlay(double sampleRate, int)
 {
     currentSampleRate = sampleRate;
     for (auto& v : voices) { v = EPVoice{}; v.prepare(sampleRate); }
     seqLastStep = -1; seqActiveNote = -1; noteOffCountdown = 0;
 }
 
-EPVoice* AndreProcessor::findFreeVoice()
+EPVoice* DiodeProcessor::findFreeVoice()
 {
     for (auto& v : voices) if (!v.active) return &v;
     voices[0].active = false; voices[0].stage = EPVoice::Stage::Off;
     return &voices[0];
 }
 
-void AndreProcessor::seqNoteOff()
+void DiodeProcessor::seqNoteOff()
 {
     if (seqActiveNote < 0) return;
     for (auto& v : voices)
@@ -179,7 +179,7 @@ void AndreProcessor::seqNoteOff()
     seqActiveNote = -1;
 }
 
-void AndreProcessor::processBlock(juce::AudioBuffer<float>& buffer,
+void DiodeProcessor::processBlock(juce::AudioBuffer<float>& buffer,
                                    juce::MidiBuffer& midiMessages)
 {
     buffer.clear();
@@ -342,7 +342,7 @@ void AndreProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     }
 }
 
-void AndreProcessor::getStateInformation(juce::MemoryBlock& dest)
+void DiodeProcessor::getStateInformation(juce::MemoryBlock& dest)
 {
     auto state = apvts.copyState();
     auto seqTree = juce::ValueTree("SEQ");
@@ -356,7 +356,7 @@ void AndreProcessor::getStateInformation(juce::MemoryBlock& dest)
     copyXmlToBinary(*xml, dest);
 }
 
-void AndreProcessor::setStateInformation(const void* data, int size)
+void DiodeProcessor::setStateInformation(const void* data, int size)
 {
     std::unique_ptr<juce::XmlElement> xml(getXmlFromBinary(data, size));
     if (!xml || !xml->hasTagName(apvts.state.getType())) return;
@@ -374,12 +374,12 @@ void AndreProcessor::setStateInformation(const void* data, int size)
     apvts.replaceState(state);
 }
 
-juce::AudioProcessorEditor* AndreProcessor::createEditor()
+juce::AudioProcessorEditor* DiodeProcessor::createEditor()
 {
-    return new AndreEditor(*this);
+    return new DiodeEditor(*this);
 }
 
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new AndreProcessor();
+    return new DiodeProcessor();
 }

@@ -53,9 +53,9 @@ void StepButton::mouseDown(const juce::MouseEvent&)
     if (onToggle) onToggle(index);
 }
 
-// ── AndreEditor ──────────────────────────────────────────────────────────────
+// ── DiodeEditor ──────────────────────────────────────────────────────────────
 
-AndreEditor::AndreEditor(AndreProcessor& p)
+DiodeEditor::DiodeEditor(DiodeProcessor& p)
     : AudioProcessorEditor(&p), processor(p),
       osc1Attach    (p.apvts, "osc1Type",   osc1Box),
       osc2Attach    (p.apvts, "osc2Type",   osc2Box),
@@ -98,7 +98,7 @@ AndreEditor::AndreEditor(AndreProcessor& p)
     setupSlider(sustainSlider, sustainLabel, "Sustain");
 
     // Sequencer - step buttons
-    for (int i = 0; i < AndreProcessor::SEQ_STEPS; ++i)
+    for (int i = 0; i < DiodeProcessor::SEQ_STEPS; ++i)
     {
         stepButtons[i].index = i;
         stepButtons[i].onToggle = [this](int idx)
@@ -135,9 +135,9 @@ AndreEditor::AndreEditor(AndreProcessor& p)
     startTimerHz(30);
 }
 
-AndreEditor::~AndreEditor() { stopTimer(); }
+DiodeEditor::~DiodeEditor() { stopTimer(); }
 
-void AndreEditor::setupSlider(juce::Slider& s, juce::Label& l, const juce::String& name)
+void DiodeEditor::setupSlider(juce::Slider& s, juce::Label& l, const juce::String& name)
 {
     s.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     s.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 72, 18);
@@ -156,7 +156,7 @@ void AndreEditor::setupSlider(juce::Slider& s, juce::Label& l, const juce::Strin
     addAndMakeVisible(l);
 }
 
-void AndreEditor::setupCombo(juce::ComboBox& c, juce::Label& l, const juce::String& name)
+void DiodeEditor::setupCombo(juce::ComboBox& c, juce::Label& l, const juce::String& name)
 {
     c.setColour(juce::ComboBox::backgroundColourId, PANEL);
     c.setColour(juce::ComboBox::textColourId,       WHITE);
@@ -171,7 +171,7 @@ void AndreEditor::setupCombo(juce::ComboBox& c, juce::Label& l, const juce::Stri
     addAndMakeVisible(l);
 }
 
-void AndreEditor::updateRecButton()
+void DiodeEditor::updateRecButton()
 {
     bool rec = processor.seqRecording.load();
     recButton.setToggleState(rec, juce::dontSendNotification);
@@ -179,11 +179,11 @@ void AndreEditor::updateRecButton()
     recButton.setColour(juce::TextButton::buttonColourId, rec ? RED : juce::Colour(0xff333355));
 }
 
-void AndreEditor::timerCallback()
+void DiodeEditor::timerCallback()
 {
     // Update step buttons
     int  curStep = processor.seqCurrentStep.load();
-    for (int i = 0; i < AndreProcessor::SEQ_STEPS; ++i)
+    for (int i = 0; i < DiodeProcessor::SEQ_STEPS; ++i)
     {
         bool enabled = processor.apvts.getRawParameterValue("s" + juce::String(i) + "en")->load() > 0.5f;
         int  note    = processor.seqSteps[i].note.load();
@@ -193,7 +193,7 @@ void AndreEditor::timerCallback()
     updateRecButton();
 }
 
-void AndreEditor::paint(juce::Graphics& g)
+void DiodeEditor::paint(juce::Graphics& g)
 {
     g.fillAll(BG);
 
@@ -202,7 +202,7 @@ void AndreEditor::paint(juce::Graphics& g)
     g.fillRect(0, 0, getWidth(), 50);
     g.setColour(GOLD);
     g.setFont(juce::FontOptions(22.0f).withStyle("Bold"));
-    g.drawFittedText("ANDRE", {0, 6, getWidth(), 26}, juce::Justification::centred, 1);
+    g.drawFittedText("DIODE", {0, 6, getWidth(), 26}, juce::Justification::centred, 1);
     g.setColour(DIM);
     g.setFont(juce::FontOptions(11.0f));
     g.drawFittedText("Dual Osc  |  Filters  |  Sequencer  |  8 voices",
@@ -223,7 +223,7 @@ void AndreEditor::paint(juce::Graphics& g)
     section("SEQUENCER",   RED,   432);
 }
 
-void AndreEditor::resized()
+void DiodeEditor::resized()
 {
     const int W       = getWidth();
     const int pad     = 16;
@@ -315,7 +315,7 @@ void AndreEditor::resized()
         const int spdH  = 26;
         const int ctrl  = recW + gateW + spdW + 18;  // total control area
         int btnTotal    = inner - ctrl;
-        int btnW        = btnTotal / AndreProcessor::SEQ_STEPS;
+        int btnW        = btnTotal / DiodeProcessor::SEQ_STEPS;
 
         recButton .setBounds(pad,                   y + (btnH - recH) / 2, recW, recH);
         gateSlider.setBounds(pad + recW + 6,        y,            gateW, btnH - labelH);
@@ -324,7 +324,7 @@ void AndreEditor::resized()
         speedLabel.setBounds(pad + recW + gateW + 12, y + (btnH - spdH) / 2 + spdH - 8, spdW, labelH);
 
         int bx = pad + ctrl + 4;
-        for (int i = 0; i < AndreProcessor::SEQ_STEPS; ++i)
+        for (int i = 0; i < DiodeProcessor::SEQ_STEPS; ++i)
             stepButtons[i].setBounds(bx + btnW * i, y, btnW, btnH);
     }
 }

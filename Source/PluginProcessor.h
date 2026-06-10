@@ -72,11 +72,11 @@ struct SeqStep
 
 // ── Processor ────────────────────────────────────────────────────────────────
 
-class AndreProcessor : public juce::AudioProcessor
+class DiodeProcessor : public juce::AudioProcessor
 {
 public:
-    AndreProcessor();
-    ~AndreProcessor() override = default;
+    DiodeProcessor();
+    ~DiodeProcessor() override = default;
 
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override {}
@@ -85,7 +85,7 @@ public:
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override { return true; }
 
-    const juce::String getName() const override { return "Andre"; }
+    const juce::String getName() const override { return "Diode"; }
     bool   acceptsMidi()  const override { return true; }
     bool   producesMidi() const override { return false; }
     bool   isMidiEffect() const override { return false; }
@@ -127,5 +127,5 @@ private:
     EPVoice* findFreeVoice();
     void     seqNoteOff();
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AndreProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DiodeProcessor)
 };

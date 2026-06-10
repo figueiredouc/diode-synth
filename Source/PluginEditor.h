@@ -41,19 +41,19 @@ private:
 
 // ── Editor ────────────────────────────────────────────────────────────────────
 
-class AndreEditor : public juce::AudioProcessorEditor,
+class DiodeEditor : public juce::AudioProcessorEditor,
                     public juce::Timer
 {
 public:
-    explicit AndreEditor(AndreProcessor&);
-    ~AndreEditor() override;
+    explicit DiodeEditor(DiodeProcessor&);
+    ~DiodeEditor() override;
 
     void paint   (juce::Graphics&) override;
     void resized () override;
     void timerCallback() override;
 
 private:
-    AndreProcessor& processor;
+    DiodeProcessor& processor;
 
     // Oscillator section
     juce::ComboBox osc1Box,       osc2Box;
@@ -74,7 +74,7 @@ private:
     juce::Label  attackLabel,  decayLabel,  sustainLabel;
 
     // Sequencer section
-    StepButton   stepButtons[AndreProcessor::SEQ_STEPS];
+    StepButton   stepButtons[DiodeProcessor::SEQ_STEPS];
     juce::TextButton recButton  { "REC" };
     juce::Slider     gateSlider;
     juce::Label      gateLabel;
@@ -96,5 +96,5 @@ private:
     void setupCombo  (juce::ComboBox&, juce::Label&, const juce::String& name);
     void updateRecButton();
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AndreEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DiodeEditor)
 };

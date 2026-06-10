@@ -1,8 +1,8 @@
-# Andre — Dual Oscillator Synth
+# Diode — Dual Oscillator Synth
 
 A VST3/AU synthesizer plugin for macOS, built with JUCE.
 
-![Andre Synth UI](docs/screenshot.png)
+![Diode Synth UI](docs/screenshot.png)
 
 ## Download & Install
 
@@ -13,10 +13,10 @@ A VST3/AU synthesizer plugin for macOS, built with JUCE.
 - Any DAW supporting VST3 or AU (Ableton Live, Logic Pro, Reaper, etc.)
 
 ### Installation
-1. Download `Andre-macOS.pkg` from the link above
+1. Download `Diode-macOS.pkg` from the link above
 2. Double-click the `.pkg` file and follow the installer
 3. Open your DAW and rescan plugins
-4. Find **Andre** under Instruments → VST3 or AU
+4. Find **Diode** under Instruments → VST3 or AU
 
 > If macOS blocks the installer: **System Settings → Privacy & Security → Open Anyway**
 
@@ -89,17 +89,17 @@ Each oscillator has its own filter:
 - Git
 
 ```bash
-git clone --recurse-submodules https://github.com/figueiredouc/andre-synth
-cd andre-synth
+git clone --recurse-submodules https://github.com/figueiredouc/diode-synth
+cd diode-synth
 git clone --depth=1 https://github.com/juce-framework/JUCE ../JUCE
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release
 ```
 
-Outputs in `build/Andre_artefacts/Release/`:
-- `VST3/Andre.vst3`
-- `AU/Andre.component`
-- `Standalone/Andre.app`
+Outputs in `build/Diode_artefacts/Release/`:
+- `VST3/Diode.vst3`
+- `AU/Diode.component`
+- `Standalone/Diode.app`
 
 ---
 
